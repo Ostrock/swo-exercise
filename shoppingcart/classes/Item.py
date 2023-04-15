@@ -28,4 +28,7 @@ class Item:
     def price(self) -> float:
         return self._price
     
+    def __repr__(self) -> str:
+        return f'Item(name={self.name}, code={self.code}, price={self.price:.2f})'
+    
     

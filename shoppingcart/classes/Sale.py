@@ -46,3 +46,9 @@ class Sale:
             raise ValueError('The quantity of a product been sold should be greater than 0 or less')
         else:
             return True
+        
+    def __str__(self) -> str:
+        return f'{self.item.name} - {self.quantity} - €{self.total_price:.2f}'
+    
+    def __repr__(self):
+        return f'Sale({str(self.item)}, quantity={self.quantity}, total_price={self.total_price:.2f})' 
