@@ -1,18 +1,32 @@
-from typing import List
+from typing import List, Dict
 
 from shoppingcart import abc as abs
+from shoppingcart.classes.Sale import Sale
+from shoppingcart.classes.Item import Item
 
 
 class ShoppingCart(abs.ShoppingCart):
     def __init__(self):
-        self._items = dict()
+        self._items: List[Sale...] = []
+        self._processed_items: Dict[int, int] = {}
 
     def add_item(self, product_code: str, quantity: int):
-        if product_code not in self._items:
-            self._items[product_code] = quantity
-        else:
-            q = self._items[product_code]
-            self._items[product_code] = q + quantity
+        product_code_int = Item.code_validator(product_code)
+        new_item  = Item(**self._get_product(product_code_int))
+        try:
+            if self._processed_items.get(new_item.code) is not None:
+                index = self._processed_items.get(new_item.code)
+                add = Sale.validate_quantity(quantity)
+                self._items[index].quantity = self._items[index].quantity + add
+                self._items[index].total_price = self._items[index].price * self._items[index].quantity
+
+            else:
+                quantity = Sale.validate_quantity(quantity)
+                sale = Sale(new_item, quantity)
+                self._processed_items.setdefault(new_item.code, len(self._processed_items))
+                self._items.append(sale)
+        except Exception as e:
+            print(str(e))
 
     def print_receipt(self) -> List[str]:
         lines = []
