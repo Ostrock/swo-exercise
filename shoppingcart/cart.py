@@ -1,9 +1,9 @@
-import typing
+from typing import List
 
-from . import abc
+from shoppingcart import abc as abs
 
 
-class ShoppingCart(abc.ShoppingCart):
+class ShoppingCart(abs.ShoppingCart):
     def __init__(self):
         self._items = dict()
 
@@ -14,7 +14,7 @@ class ShoppingCart(abc.ShoppingCart):
             q = self._items[product_code]
             self._items[product_code] = q + quantity
 
-    def print_receipt(self) -> typing.List[str]:
+    def print_receipt(self) -> List[str]:
         lines = []
 
         for item in self._items.items():
