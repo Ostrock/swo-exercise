@@ -7,7 +7,7 @@ from shoppingcart.classes.Item import Item
 
 class ShoppingCart(abs.ShoppingCart):
     def __init__(self):
-        self._items: List[Sale...] = []
+        self._items: List[Sale] = []
         self._processed_items: Dict[int, int] = {}
 
     def add_item(self, product_code: str, quantity: int):
