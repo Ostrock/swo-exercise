@@ -10,7 +10,7 @@ class ShoppingCart(abs.ShoppingCart):
         self._items: List[Sale] = []
         self._processed_items: Dict[int, int] = {}
 
-    def add_item(self, product_code: str, quantity: int):
+    def add_item(self, product_code: str, quantity: int) -> None:
         product_code_int = Item.code_validator(product_code)
         new_item  = Item(**self._get_product(product_code_int))
         try:
@@ -30,26 +30,22 @@ class ShoppingCart(abs.ShoppingCart):
 
     def print_receipt(self) -> List[str]:
         lines = []
-
-        for item in self._items.items():
-            price = self._get_product_price(item[0]) * item[1]
-
-            price_string = "€%.2f" % price
-
-            lines.append(item[0] + " - " + str(item[1]) + ' - ' + price_string)
-
+        total = 0
+        for item in self._items:
+            lines.append(str(item))
+            total += item.total_price
+        lines.append(' ')
+        lines.append(f'Total: {total:.2f}')
         return lines
 
     def _get_product_price(self, product_code: str) -> float:
-        price = 0.0
+        products = {
+            1: {'_name':'apple', '_price': 1.0},
+            2: {'_name':'banana', '_price': 1.1},
+            3: {'_name':'kiwi', '_price': 3.0}
+        }
 
-        if product_code == 'apple':
-            price = 1.0
-
-        elif product_code == 'banana':
-            price = 1.1
-
-        elif product_code == 'kiwi':
-            price = 3.0
-
-        return price
+        if products.get(product_code) is not None:
+            price = {'_code': product_code} | products[product_code]
+            return price
+        
