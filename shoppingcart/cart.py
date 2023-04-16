@@ -1,4 +1,5 @@
 from typing import List, Dict
+from json import load
 
 from shoppingcart import abc as abs
 from shoppingcart.classes.Sale import Sale
@@ -40,13 +41,16 @@ class ShoppingCart(abs.ShoppingCart):
         return lines
 
     def _get_product_price(self, product_code: str) -> float:
-        products = {
-            1: {'_name':'apple', '_price': 1.0},
-            2: {'_name':'banana', '_price': 1.1},
-            3: {'_name':'kiwi', '_price': 3.0}
-        }
+        products = self._get_from_json()
 
         if products.get(product_code) is not None:
             price = {'_code': product_code} | products[product_code]
             return price
-        
+    
+    def _get_from_json(self):
+        with open('common_prices.json') as f:
+            data = load(f)
+            adapted = {}
+            for k,v in data.items():
+                adapted.setdefault(int(k),v)
+        return adapted

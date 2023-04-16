@@ -1,0 +1,14 @@
+{
+	"1": {
+		"_name": "apple",
+		"_price": 1.0
+	},
+	"2": {
+		"_name": "banana",
+		"_price": 1.1
+	},
+	"3": {
+		"_name": "kiwi",
+		"_price": 3.0
+	}
+}
