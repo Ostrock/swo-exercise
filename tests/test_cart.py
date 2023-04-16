@@ -3,7 +3,7 @@ from shoppingcart.cart import ShoppingCart
 
 def test_add_item():
     cart = ShoppingCart()
-    cart.add_item("apple", 1)
+    cart.add_item("1", 1)
 
     receipt = cart.print_receipt()
 
@@ -12,7 +12,7 @@ def test_add_item():
 
 def test_add_item_with_multiple_quantity():
     cart = ShoppingCart()
-    cart.add_item("apple", 2)
+    cart.add_item("1", 2)
 
     receipt = cart.print_receipt()
 
@@ -21,8 +21,8 @@ def test_add_item_with_multiple_quantity():
 
 def test_add_different_items():
     cart = ShoppingCart()
-    cart.add_item("banana", 1)
-    cart.add_item("kiwi", 1)
+    cart.add_item("2", 1)
+    cart.add_item("3", 1)
 
     receipt = cart.print_receipt()
 
