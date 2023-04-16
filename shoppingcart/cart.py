@@ -12,16 +12,17 @@ class ShoppingCart(abs.ShoppingCart):
 
     def add_item(self, product_code: str, quantity: int) -> None:
         product_code_int = Item.code_validator(product_code)
-        new_item  = Item(**self._get_product(product_code_int))
+        new_item  = Item(**self._get_product_price(product_code_int))
         try:
+            if Sale.validate_quantity(quantity):
+                self._quantity = quantity
             if self._processed_items.get(new_item.code) is not None:
                 index = self._processed_items.get(new_item.code)
-                add = Sale.validate_quantity(quantity)
-                self._items[index].quantity = self._items[index].quantity + add
-                self._items[index].total_price = self._items[index].price * self._items[index].quantity
+                self._items[index].quantity = self._items[index].quantity + quantity
+                self._items[index].calc_total_price(self._items[index].quantity)
 
-            else:
-                quantity = Sale.validate_quantity(quantity)
+            elif Sale.validate_quantity(quantity):
+                self._quantity = quantity
                 sale = Sale(new_item, quantity)
                 self._processed_items.setdefault(new_item.code, len(self._processed_items))
                 self._items.append(sale)

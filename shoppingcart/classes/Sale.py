@@ -37,11 +37,12 @@ class Sale:
     def total_price(self) -> float:
         return self._total_price
     
-    @total_price.setter
-    def total_price(self):
-        total = self.quantity * self.item.price
+    def calc_total_price(self, quantity):
+        self._total_price = quantity * self.item.price
+        
 
-    def validate_quantity(self, number: int) -> bool:
+    @classmethod
+    def validate_quantity(cls, number: int) -> bool:
         if number < 1:
             raise ValueError('The quantity of a product been sold should be greater than 0 or less')
         else:
