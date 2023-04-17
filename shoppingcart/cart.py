@@ -12,22 +12,22 @@ class ShoppingCart(abs.ShoppingCart):
         self._items: List[Sale] = []
         self._processed_items: Dict[int, int] = {}
 
-    def add_item(self, product_code: str, quantity: int) -> None:
-        product_code_int = Item.code_validator(product_code)
-        new_item  = Item(**self._get_product_price(product_code_int))
+    def add_item(self, product_code: str, quantity: int, item = Item, sale = Sale) -> None:
+        product_code_int = item.code_validator(product_code)
+        new_item  = item(**self._get_product_price(product_code_int))
         try:
-            if Sale.validate_quantity(quantity):
+            if sale.validate_quantity(quantity):
                 self._quantity = quantity
             if self._processed_items.get(new_item.code) is not None:
                 index = self._processed_items.get(new_item.code)
                 self._items[index].quantity = self._items[index].quantity + quantity
                 self._items[index].calc_total_price(self._items[index].quantity)
 
-            elif Sale.validate_quantity(quantity):
+            elif sale.validate_quantity(quantity):
                 self._quantity = quantity
-                sale = Sale(new_item, quantity)
+                new_sale = sale(new_item, quantity)
                 self._processed_items.setdefault(new_item.code, len(self._processed_items))
-                self._items.append(sale)
+                self._items.append(new_sale)
         except Exception as e:
             print(str(e))
 
@@ -56,9 +56,9 @@ class ShoppingCart(abs.ShoppingCart):
         else:
             lines = []
             total = 0
-            for item in self._items:
-                lines.append(str(item))
-                total += item.total_price
+            for sold_item in self._items:
+                lines.append(str(sold_item))
+                total += sold_item.total_price
             lines.append(' ')
             lines.append(f'Total: {total:.2f}')
             return lines
