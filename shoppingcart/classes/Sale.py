@@ -12,7 +12,7 @@ class Sale:
     def __post_init__(self):
         try:
            if self.validate_quantity(self._quantity):
-            self._total_price = self._item.price * self._quantity   
+                self._total_price = self._item.price * self._quantity   
         except Exception as e:
             print(str(e))
 

@@ -11,10 +11,10 @@ class Item:
         try:
             code_trim = code.strip()
             code_int = int(code_trim)
+            return code_int
         except Exception as e:
             print(str(e))
-
-        return code_int
+        
     
     @property
     def name(self) -> str:
